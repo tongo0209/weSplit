@@ -1,0 +1,65 @@
+﻿<Window x:Class="WeSplit.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeSplit" xmlns:local1="clr-namespace:WeSplit.SQLData"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="SplashScreen" Height="600" Width="400"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        RenderOptions.BitmapScalingMode="HighQuality"
+        WindowStartupLocation="CenterScreen"
+        Foreground="#000333">
+    <Window.Resources>
+        <local1:RelativeToAbsolutePathForPlace x:Key="pathConverter"/>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="/Image/SplashScreen/background_SplashScreen.png"  Stretch="Fill" />
+    </Window.Background>
+    <Grid>
+        <ToggleButton VerticalAlignment="Top"
+                      Name="check"
+                      HorizontalAlignment="Right"
+                      Margin="0 20 20 0"
+                      Click="Check"
+                      Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                      ToolTip="Tắt cửa này sổ vĩnh viễn!"
+                      IsChecked="False"/>
+        <Rectangle Width="230"
+                   Height="120"
+                   VerticalAlignment="Top"
+                   Margin="0 80 0 0" 
+                   RadiusY="15" 
+                   RadiusX="15">
+            <Rectangle.Fill>
+                <ImageBrush 
+                    ImageSource="{Binding HINHANH , Converter={StaticResource pathConverter}}"
+                    Stretch="UniformToFill"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid Width="230"
+              Height="120" 
+              VerticalAlignment="Top"  
+              Margin="0 80 0 0">
+            <Rectangle Fill="#CC0133CD" 
+                       RadiusY="15" Opacity=".7"
+                       RadiusX="15"/>
+            <Label Content="{Binding TEN_DIEMDEN}"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   Foreground="#FFFFFF"
+                   FontSize="30" FontWeight="Bold" Background="#02FFFFFF" Margin="3,-1,-3,1"/>
+        </Grid>
+        <TextBlock Width="350"
+                   Margin="0 210 0 0"
+                   TextWrapping="WrapWithOverflow"
+                   Foreground="#0133CD"
+                   Text="{Binding THONGTIN_DD}"/>
+        <Rectangle x:Name="rectangle1" Fill="#FFF4F4F5"  HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                   Height="10" Width="400" />
+        <Rectangle x:Name="rectangle2" Fill="#003FFF"  HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                   Height="10" Width="0"/>
+    </Grid>
+</Window>

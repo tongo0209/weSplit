@@ -1,0 +1,553 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbWeSplitModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CHUYENDI">
+          <Key>
+            <PropertyRef Name="MA_CHUYENDI" />
+          </Key>
+          <Property Name="MA_CHUYENDI" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="TEN_CHUYENDI" Type="nvarchar(max)" />
+          <Property Name="DIEMDEN" Type="varchar" MaxLength="6" />
+          <Property Name="TRANGTHAI" Type="bit" />
+          <Property Name="THUE_XE" Type="float" />
+          <Property Name="THUE_KS" Type="float" />
+          <Property Name="MAYBAY" Type="float" />
+          <Property Name="NGAYDI" Type="date" />
+          <Property Name="NGAYVE" Type="date" />
+        </EntityType>
+        <EntityType Name="DD_DULICH">
+          <Key>
+            <PropertyRef Name="MA_DIEMDEN" />
+          </Key>
+          <Property Name="MA_DIEMDEN" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="TEN_DIEMDEN" Type="nvarchar" MaxLength="60" />
+          <Property Name="DCHI_DIEMDEN" Type="nvarchar(max)" />
+          <Property Name="THONGTIN_DD" Type="nvarchar(max)" />
+          <Property Name="HINHANH" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="DD_DUNGCHAN">
+          <Key>
+            <PropertyRef Name="MA_DD_DUNGCHAN" />
+          </Key>
+          <Property Name="MA_DD_DUNGCHAN" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="TEN_DD_DUNGCHAN" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="HINHANH_CHUYENDI">
+          <Key>
+            <PropertyRef Name="MA_ANH_CD" />
+          </Key>
+          <Property Name="MA_ANH_CD" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="TENANH_CD" Type="varchar" MaxLength="200" />
+          <Property Name="CHUYENDI" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="KHOANCHI">
+          <Key>
+            <PropertyRef Name="MA_KCHI" />
+          </Key>
+          <Property Name="MA_KCHI" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="MA_CHUYENDI" Type="varchar" MaxLength="6" />
+          <Property Name="MA_DD_DUNGCHAN" Type="varchar" MaxLength="6" />
+          <Property Name="STT_DC" Type="int" />
+          <Property Name="HANGMUC" Type="nvarchar" MaxLength="100" />
+          <Property Name="SOTIENCHI" Type="float" />
+          <Property Name="GHI_CHU" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="LOTRINH">
+          <Key>
+            <PropertyRef Name="STT" />
+            <PropertyRef Name="MA_CHUYENDI" />
+            <PropertyRef Name="MA_DD_DUNGCHAN" />
+          </Key>
+          <Property Name="STT" Type="int" Nullable="false" />
+          <Property Name="MA_CHUYENDI" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="MA_DD_DUNGCHAN" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="DD_DUNGCHAN" Type="nvarchar" MaxLength="100" />
+          <Property Name="MOTA" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="THAMGIA">
+          <Key>
+            <PropertyRef Name="MACD" />
+            <PropertyRef Name="MATV" />
+          </Key>
+          <Property Name="MACD" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="MATV" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="TIENTHU" Type="float" />
+        </EntityType>
+        <EntityType Name="THANHVIEN">
+          <Key>
+            <PropertyRef Name="MATV" />
+          </Key>
+          <Property Name="MATV" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="TENTV" Type="nvarchar" MaxLength="60" />
+          <Property Name="SDT" Type="char" MaxLength="12" />
+        </EntityType>
+        <Association Name="FK_CHUYENDI_DDDL">
+          <End Role="DD_DULICH" Type="Self.DD_DULICH" Multiplicity="0..1" />
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DD_DULICH">
+              <PropertyRef Name="MA_DIEMDEN" />
+            </Principal>
+            <Dependent Role="CHUYENDI">
+              <PropertyRef Name="DIEMDEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HINHANH_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="0..1" />
+          <End Role="HINHANH_CHUYENDI" Type="Self.HINHANH_CHUYENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="HINHANH_CHUYENDI">
+              <PropertyRef Name="CHUYENDI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KHOANGCHI_LOTRINH">
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="0..1" />
+          <End Role="KHOANCHI" Type="Self.KHOANCHI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOTRINH">
+              <PropertyRef Name="STT" />
+              <PropertyRef Name="MA_CHUYENDI" />
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Principal>
+            <Dependent Role="KHOANCHI">
+              <PropertyRef Name="STT_DC" />
+              <PropertyRef Name="MA_CHUYENDI" />
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOTRINH_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="1" />
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="LOTRINH">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOTRINH_DDDC">
+          <End Role="DD_DUNGCHAN" Type="Self.DD_DUNGCHAN" Multiplicity="1" />
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DD_DUNGCHAN">
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Principal>
+            <Dependent Role="LOTRINH">
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THAMGIA_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="1" />
+          <End Role="THAMGIA" Type="Self.THAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="THAMGIA">
+              <PropertyRef Name="MACD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THAMGIA_THANHVIEN">
+          <End Role="THANHVIEN" Type="Self.THANHVIEN" Multiplicity="1" />
+          <End Role="THAMGIA" Type="Self.THAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANHVIEN">
+              <PropertyRef Name="MATV" />
+            </Principal>
+            <Dependent Role="THAMGIA">
+              <PropertyRef Name="MATV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbWeSplitModelStoreContainer">
+          <EntitySet Name="CHUYENDI" EntityType="Self.CHUYENDI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DD_DULICH" EntityType="Self.DD_DULICH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DD_DUNGCHAN" EntityType="Self.DD_DUNGCHAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HINHANH_CHUYENDI" EntityType="Self.HINHANH_CHUYENDI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KHOANCHI" EntityType="Self.KHOANCHI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOTRINH" EntityType="Self.LOTRINH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THAMGIA" EntityType="Self.THAMGIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THANHVIEN" EntityType="Self.THANHVIEN" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CHUYENDI_DDDL" Association="Self.FK_CHUYENDI_DDDL">
+            <End Role="DD_DULICH" EntitySet="DD_DULICH" />
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HINHANH_CHUYENDI" Association="Self.FK_HINHANH_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="HINHANH_CHUYENDI" EntitySet="HINHANH_CHUYENDI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KHOANGCHI_LOTRINH" Association="Self.FK_KHOANGCHI_LOTRINH">
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+            <End Role="KHOANCHI" EntitySet="KHOANCHI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOTRINH_CHUYENDI" Association="Self.FK_LOTRINH_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOTRINH_DDDC" Association="Self.FK_LOTRINH_DDDC">
+            <End Role="DD_DUNGCHAN" EntitySet="DD_DUNGCHAN" />
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THAMGIA_CHUYENDI" Association="Self.FK_THAMGIA_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="THAMGIA" EntitySet="THAMGIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THAMGIA_THANHVIEN" Association="Self.FK_THAMGIA_THANHVIEN">
+            <End Role="THANHVIEN" EntitySet="THANHVIEN" />
+            <End Role="THAMGIA" EntitySet="THAMGIA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbWeSplitModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CHUYENDI">
+          <Key>
+            <PropertyRef Name="MA_CHUYENDI" />
+          </Key>
+          <Property Name="MA_CHUYENDI" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TEN_CHUYENDI" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DIEMDEN" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="TRANGTHAI" Type="Boolean" />
+          <Property Name="THUE_XE" Type="Double" />
+          <Property Name="THUE_KS" Type="Double" />
+          <Property Name="MAYBAY" Type="Double" />
+          <Property Name="NGAYDI" Type="DateTime" Precision="0" />
+          <Property Name="NGAYVE" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="DD_DULICH" Relationship="Self.FK_CHUYENDI_DDDL" FromRole="CHUYENDI" ToRole="DD_DULICH" />
+          <NavigationProperty Name="HINHANH_CHUYENDI" Relationship="Self.FK_HINHANH_CHUYENDI" FromRole="CHUYENDI" ToRole="HINHANH_CHUYENDI" />
+          <NavigationProperty Name="LOTRINH" Relationship="Self.FK_LOTRINH_CHUYENDI" FromRole="CHUYENDI" ToRole="LOTRINH" />
+          <NavigationProperty Name="THAMGIA" Relationship="Self.FK_THAMGIA_CHUYENDI" FromRole="CHUYENDI" ToRole="THAMGIA" />
+        </EntityType>
+        <EntityType Name="DD_DULICH">
+          <Key>
+            <PropertyRef Name="MA_DIEMDEN" />
+          </Key>
+          <Property Name="MA_DIEMDEN" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TEN_DIEMDEN" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="DCHI_DIEMDEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="THONGTIN_DD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HINHANH" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CHUYENDI" Relationship="Self.FK_CHUYENDI_DDDL" FromRole="DD_DULICH" ToRole="CHUYENDI" />
+        </EntityType>
+        <EntityType Name="DD_DUNGCHAN">
+          <Key>
+            <PropertyRef Name="MA_DD_DUNGCHAN" />
+          </Key>
+          <Property Name="MA_DD_DUNGCHAN" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TEN_DD_DUNGCHAN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LOTRINH" Relationship="Self.FK_LOTRINH_DDDC" FromRole="DD_DUNGCHAN" ToRole="LOTRINH" />
+        </EntityType>
+        <EntityType Name="HINHANH_CHUYENDI">
+          <Key>
+            <PropertyRef Name="MA_ANH_CD" />
+          </Key>
+          <Property Name="MA_ANH_CD" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TENANH_CD" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CHUYENDI" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CHUYENDI1" Relationship="Self.FK_HINHANH_CHUYENDI" FromRole="HINHANH_CHUYENDI" ToRole="CHUYENDI" />
+        </EntityType>
+        <EntityType Name="KHOANCHI">
+          <Key>
+            <PropertyRef Name="MA_KCHI" />
+          </Key>
+          <Property Name="MA_KCHI" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MA_CHUYENDI" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="MA_DD_DUNGCHAN" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="STT_DC" Type="Int32" />
+          <Property Name="HANGMUC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SOTIENCHI" Type="Double" />
+          <Property Name="GHI_CHU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LOTRINH" Relationship="Self.FK_KHOANGCHI_LOTRINH" FromRole="KHOANCHI" ToRole="LOTRINH" />
+        </EntityType>
+        <EntityType Name="LOTRINH">
+          <Key>
+            <PropertyRef Name="STT" />
+            <PropertyRef Name="MA_CHUYENDI" />
+            <PropertyRef Name="MA_DD_DUNGCHAN" />
+          </Key>
+          <Property Name="STT" Type="Int32" Nullable="false" />
+          <Property Name="MA_CHUYENDI" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MA_DD_DUNGCHAN" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DD_DUNGCHAN" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MOTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CHUYENDI" Relationship="Self.FK_LOTRINH_CHUYENDI" FromRole="LOTRINH" ToRole="CHUYENDI" />
+          <NavigationProperty Name="DD_DUNGCHAN1" Relationship="Self.FK_LOTRINH_DDDC" FromRole="LOTRINH" ToRole="DD_DUNGCHAN" />
+          <NavigationProperty Name="KHOANCHI" Relationship="Self.FK_KHOANGCHI_LOTRINH" FromRole="LOTRINH" ToRole="KHOANCHI" />
+        </EntityType>
+        <EntityType Name="THAMGIA">
+          <Key>
+            <PropertyRef Name="MACD" />
+            <PropertyRef Name="MATV" />
+          </Key>
+          <Property Name="MACD" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MATV" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TIENTHU" Type="Double" />
+          <NavigationProperty Name="CHUYENDI" Relationship="Self.FK_THAMGIA_CHUYENDI" FromRole="THAMGIA" ToRole="CHUYENDI" />
+          <NavigationProperty Name="THANHVIEN" Relationship="Self.FK_THAMGIA_THANHVIEN" FromRole="THAMGIA" ToRole="THANHVIEN" />
+        </EntityType>
+        <EntityType Name="THANHVIEN">
+          <Key>
+            <PropertyRef Name="MATV" />
+          </Key>
+          <Property Name="MATV" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TENTV" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="THAMGIA" Relationship="Self.FK_THAMGIA_THANHVIEN" FromRole="THANHVIEN" ToRole="THAMGIA" />
+        </EntityType>
+        <Association Name="FK_CHUYENDI_DDDL">
+          <End Role="DD_DULICH" Type="Self.DD_DULICH" Multiplicity="0..1" />
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DD_DULICH">
+              <PropertyRef Name="MA_DIEMDEN" />
+            </Principal>
+            <Dependent Role="CHUYENDI">
+              <PropertyRef Name="DIEMDEN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HINHANH_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="0..1" />
+          <End Role="HINHANH_CHUYENDI" Type="Self.HINHANH_CHUYENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="HINHANH_CHUYENDI">
+              <PropertyRef Name="CHUYENDI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOTRINH_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="1" />
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="LOTRINH">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THAMGIA_CHUYENDI">
+          <End Role="CHUYENDI" Type="Self.CHUYENDI" Multiplicity="1" />
+          <End Role="THAMGIA" Type="Self.THAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHUYENDI">
+              <PropertyRef Name="MA_CHUYENDI" />
+            </Principal>
+            <Dependent Role="THAMGIA">
+              <PropertyRef Name="MACD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOTRINH_DDDC">
+          <End Role="DD_DUNGCHAN" Type="Self.DD_DUNGCHAN" Multiplicity="1" />
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DD_DUNGCHAN">
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Principal>
+            <Dependent Role="LOTRINH">
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_KHOANGCHI_LOTRINH">
+          <End Role="LOTRINH" Type="Self.LOTRINH" Multiplicity="0..1" />
+          <End Role="KHOANCHI" Type="Self.KHOANCHI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOTRINH">
+              <PropertyRef Name="STT" />
+              <PropertyRef Name="MA_CHUYENDI" />
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Principal>
+            <Dependent Role="KHOANCHI">
+              <PropertyRef Name="STT_DC" />
+              <PropertyRef Name="MA_CHUYENDI" />
+              <PropertyRef Name="MA_DD_DUNGCHAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THAMGIA_THANHVIEN">
+          <End Role="THANHVIEN" Type="Self.THANHVIEN" Multiplicity="1" />
+          <End Role="THAMGIA" Type="Self.THAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANHVIEN">
+              <PropertyRef Name="MATV" />
+            </Principal>
+            <Dependent Role="THAMGIA">
+              <PropertyRef Name="MATV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbWeSplitEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CHUYENDI" EntityType="Self.CHUYENDI" />
+          <EntitySet Name="DD_DULICH" EntityType="Self.DD_DULICH" />
+          <EntitySet Name="DD_DUNGCHAN" EntityType="Self.DD_DUNGCHAN" />
+          <EntitySet Name="HINHANH_CHUYENDI" EntityType="Self.HINHANH_CHUYENDI" />
+          <EntitySet Name="KHOANCHI" EntityType="Self.KHOANCHI" />
+          <EntitySet Name="LOTRINH" EntityType="Self.LOTRINH" />
+          <EntitySet Name="THAMGIA" EntityType="Self.THAMGIA" />
+          <EntitySet Name="THANHVIEN" EntityType="Self.THANHVIEN" />
+          <AssociationSet Name="FK_CHUYENDI_DDDL" Association="Self.FK_CHUYENDI_DDDL">
+            <End Role="DD_DULICH" EntitySet="DD_DULICH" />
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HINHANH_CHUYENDI" Association="Self.FK_HINHANH_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="HINHANH_CHUYENDI" EntitySet="HINHANH_CHUYENDI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOTRINH_CHUYENDI" Association="Self.FK_LOTRINH_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THAMGIA_CHUYENDI" Association="Self.FK_THAMGIA_CHUYENDI">
+            <End Role="CHUYENDI" EntitySet="CHUYENDI" />
+            <End Role="THAMGIA" EntitySet="THAMGIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOTRINH_DDDC" Association="Self.FK_LOTRINH_DDDC">
+            <End Role="DD_DUNGCHAN" EntitySet="DD_DUNGCHAN" />
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_KHOANGCHI_LOTRINH" Association="Self.FK_KHOANGCHI_LOTRINH">
+            <End Role="LOTRINH" EntitySet="LOTRINH" />
+            <End Role="KHOANCHI" EntitySet="KHOANCHI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THAMGIA_THANHVIEN" Association="Self.FK_THAMGIA_THANHVIEN">
+            <End Role="THANHVIEN" EntitySet="THANHVIEN" />
+            <End Role="THAMGIA" EntitySet="THAMGIA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbWeSplitModelStoreContainer" CdmEntityContainer="dbWeSplitEntities">
+          <EntitySetMapping Name="CHUYENDI">
+            <EntityTypeMapping TypeName="dbWeSplitModel.CHUYENDI">
+              <MappingFragment StoreEntitySet="CHUYENDI">
+                <ScalarProperty Name="MA_CHUYENDI" ColumnName="MA_CHUYENDI" />
+                <ScalarProperty Name="TEN_CHUYENDI" ColumnName="TEN_CHUYENDI" />
+                <ScalarProperty Name="DIEMDEN" ColumnName="DIEMDEN" />
+                <ScalarProperty Name="TRANGTHAI" ColumnName="TRANGTHAI" />
+                <ScalarProperty Name="THUE_XE" ColumnName="THUE_XE" />
+                <ScalarProperty Name="THUE_KS" ColumnName="THUE_KS" />
+                <ScalarProperty Name="MAYBAY" ColumnName="MAYBAY" />
+                <ScalarProperty Name="NGAYDI" ColumnName="NGAYDI" />
+                <ScalarProperty Name="NGAYVE" ColumnName="NGAYVE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DD_DULICH">
+            <EntityTypeMapping TypeName="dbWeSplitModel.DD_DULICH">
+              <MappingFragment StoreEntitySet="DD_DULICH">
+                <ScalarProperty Name="MA_DIEMDEN" ColumnName="MA_DIEMDEN" />
+                <ScalarProperty Name="TEN_DIEMDEN" ColumnName="TEN_DIEMDEN" />
+                <ScalarProperty Name="DCHI_DIEMDEN" ColumnName="DCHI_DIEMDEN" />
+                <ScalarProperty Name="THONGTIN_DD" ColumnName="THONGTIN_DD" />
+                <ScalarProperty Name="HINHANH" ColumnName="HINHANH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DD_DUNGCHAN">
+            <EntityTypeMapping TypeName="dbWeSplitModel.DD_DUNGCHAN">
+              <MappingFragment StoreEntitySet="DD_DUNGCHAN">
+                <ScalarProperty Name="MA_DD_DUNGCHAN" ColumnName="MA_DD_DUNGCHAN" />
+                <ScalarProperty Name="TEN_DD_DUNGCHAN" ColumnName="TEN_DD_DUNGCHAN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HINHANH_CHUYENDI">
+            <EntityTypeMapping TypeName="dbWeSplitModel.HINHANH_CHUYENDI">
+              <MappingFragment StoreEntitySet="HINHANH_CHUYENDI">
+                <ScalarProperty Name="MA_ANH_CD" ColumnName="MA_ANH_CD" />
+                <ScalarProperty Name="TENANH_CD" ColumnName="TENANH_CD" />
+                <ScalarProperty Name="CHUYENDI" ColumnName="CHUYENDI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KHOANCHI">
+            <EntityTypeMapping TypeName="dbWeSplitModel.KHOANCHI">
+              <MappingFragment StoreEntitySet="KHOANCHI">
+                <ScalarProperty Name="MA_KCHI" ColumnName="MA_KCHI" />
+                <ScalarProperty Name="MA_CHUYENDI" ColumnName="MA_CHUYENDI" />
+                <ScalarProperty Name="MA_DD_DUNGCHAN" ColumnName="MA_DD_DUNGCHAN" />
+                <ScalarProperty Name="STT_DC" ColumnName="STT_DC" />
+                <ScalarProperty Name="HANGMUC" ColumnName="HANGMUC" />
+                <ScalarProperty Name="SOTIENCHI" ColumnName="SOTIENCHI" />
+                <ScalarProperty Name="GHI_CHU" ColumnName="GHI_CHU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOTRINH">
+            <EntityTypeMapping TypeName="dbWeSplitModel.LOTRINH">
+              <MappingFragment StoreEntitySet="LOTRINH">
+                <ScalarProperty Name="STT" ColumnName="STT" />
+                <ScalarProperty Name="MA_CHUYENDI" ColumnName="MA_CHUYENDI" />
+                <ScalarProperty Name="MA_DD_DUNGCHAN" ColumnName="MA_DD_DUNGCHAN" />
+                <ScalarProperty Name="DD_DUNGCHAN" ColumnName="DD_DUNGCHAN" />
+                <ScalarProperty Name="MOTA" ColumnName="MOTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THAMGIA">
+            <EntityTypeMapping TypeName="dbWeSplitModel.THAMGIA">
+              <MappingFragment StoreEntitySet="THAMGIA">
+                <ScalarProperty Name="MACD" ColumnName="MACD" />
+                <ScalarProperty Name="MATV" ColumnName="MATV" />
+                <ScalarProperty Name="TIENTHU" ColumnName="TIENTHU" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THANHVIEN">
+            <EntityTypeMapping TypeName="dbWeSplitModel.THANHVIEN">
+              <MappingFragment StoreEntitySet="THANHVIEN">
+                <ScalarProperty Name="MATV" ColumnName="MATV" />
+                <ScalarProperty Name="TENTV" ColumnName="TENTV" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

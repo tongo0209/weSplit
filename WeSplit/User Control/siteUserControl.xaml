@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="WeSplit.User_Control.siteUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeSplit.User_Control"
+             mc:Ignorable="d" 
+             Loaded="UserControl_Loaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation From="0" To="1" Duration="0:0:1" Storyboard.TargetProperty="Opacity"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid>
+        <Border Margin="50">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"
+                       Content="DANH SÁCH CÁC ĐỊA DANH DU LỊCH"
+                       HorizontalContentAlignment="Center"
+                       Background="#0133CD"
+                       FontSize="30"
+                       Foreground="White"
+                       FontWeight="Bold"/>
+                <Border Background="White"
+                Grid.Row="1">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="20"
+                                  Opacity=".2"/>
+                    </Border.Effect>
+                    <DataGrid Margin="10"
+                              Name="listPlace"
+                              CanUserAddRows="False"
+                              Background="White"
+                              IsReadOnly="True"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="MÃ ĐỊA DANH"
+                                        Foreground="#0133CD"
+                                        Binding="{Binding MA_DIEMDEN}"/>
+                            <DataGridTextColumn Header="TÊN ĐỊA DANH"
+                                        Foreground="#0133CD"
+                                        Binding="{Binding TEN_DIEMDEN}"/>
+                            <DataGridTextColumn Header="ĐỊA CHỈ"
+                                        Foreground="#0133CD"
+                                        Binding="{Binding DCHI_DIEMDEN}"/>
+                            <DataGridTextColumn Header="THÔNG TIN"
+                                        Foreground="#0133CD"
+                                        Binding="{Binding THONGTIN_DD}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <Button Grid.Row="2"
+                HorizontalAlignment="Right"
+                Margin="0 0 20 0"
+                Width="150"
+                Click="buttonAdd"
+                Background="#0133CD">
+                    <TextBlock Text="THÊM ĐỊA DANH"
+                       VerticalAlignment="Center"/>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
